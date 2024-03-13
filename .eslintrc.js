@@ -1,0 +1,30 @@
+module.exports = {
+  env: {
+    browser: true,
+    es2021: true,
+    node: true,
+  },
+  extends: ['plugin:react/recommended', 'airbnb', 'next/core-web-vitals'],
+  overrides: [],
+  parserOptions: {
+    ecmaVersion: 'latest',
+    sourceType: 'module',
+  },
+  plugins: ['react'],
+  rules: {
+    'default-case': 'warn',
+    'max-len': ['warn', { code: 400 }],
+    'import/prefer-default-export': 'off',
+    'react/no-danger': 'off',
+    'no-plusplus': 'off',
+    'react/jsx-no-useless-fragment': 'off',
+    'no-restricted-syntax': 'off',
+    'react/jsx-filename-extension': 'off',
+    'jsx-a11y/no-autofocus': 'off',
+    'jsx-a11y/no-static-element-interactions': 'off',
+    'jsx-a11y/click-events-have-key-events': 'off',
+    'jsx-a11y/no-noninteractive-element-interactions': 'off',
+    'react/no-array-index-key': 'off',
+    'react/jsx-props-no-spreading': 'off',
+  },
+};
