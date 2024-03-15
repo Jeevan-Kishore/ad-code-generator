@@ -3,11 +3,13 @@
 import Papa from 'papaparse';
 import { useState, useEffect } from 'react';
 import { initFlowbite } from 'flowbite';
+import { CodeModal } from '../CodeModal';
 
 const onChange = () => {};
 
 export function CsvUpload() {
   const [jsonData, setJsonData] = useState([]);
+  const [openModal, setOpenModal] = useState(false);
 
   useEffect(() => {
     initFlowbite();
@@ -40,14 +42,7 @@ export function CsvUpload() {
 
   return (
     <>
-      <div
-        id="default-modal"
-        tabIndex="-1"
-        aria-hidden="true"
-        className="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full"
-      >
-        <p>asdasdasdasd</p>
-      </div>
+      <CodeModal openModal={openModal} setOpenModal={setOpenModal} />
       <div className="mt-4 flex flex-col text-sm leading-6 text-gray-600">
         <label
           htmlFor="file-upload"
@@ -152,8 +147,7 @@ export function CsvUpload() {
                     <button
                       type="button"
                       className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-                      data-modal-target="default-modal"
-                      data-modal-toggle="default-modal"
+                      onClick={() => setOpenModal(true)}
                     >
                       Generate
                     </button>
