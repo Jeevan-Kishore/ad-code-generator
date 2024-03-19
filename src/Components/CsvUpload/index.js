@@ -10,18 +10,11 @@ export function CsvUpload() {
   const [jsonData, setJsonData] = useState([]);
   const [openModal, setOpenModal] = useState(false);
   const [modalBody, setModalBody] = useState({});
+  const [targetingID, setTargetingID] = useState({});
 
   useEffect(() => {
     initFlowbite();
   }, []);
-
-  const changeJSONAttributes = ({ key, value, index }) => {
-    const deepCloneJSON = JSON.parse(JSON.stringify(jsonData));
-    const jsonAtIndex = deepCloneJSON[index];
-    const mutatedData = { ...jsonAtIndex, ...{ [key]: value } };
-    deepCloneJSON[index] = mutatedData;
-    setJsonData(deepCloneJSON);
-  };
 
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
@@ -41,7 +34,6 @@ export function CsvUpload() {
         },
         complete: (result) => {
           setJsonData(result.data);
-          console.log(result.data);
         },
         header: true,
       });
@@ -119,8 +111,9 @@ export function CsvUpload() {
                   adSizes={adSizes}
                   adUnitID={adUnitID}
                   parentID={parentID}
-                  changeJSONAttributes={changeJSONAttributes}
                   setModalBody={setModalBody}
+                  targetingID={targetingID}
+                  setTargetingID={setTargetingID}
                 />
               ),
             )}

@@ -26,9 +26,9 @@ export function CodeModal({ openModal, setOpenModal, modalBody }) {
         <ModalContent modalBody={modalBody} />
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={copyContent}>I accept</Button>
+        <Button onClick={copyContent}>Copy</Button>
         <Button color="gray" onClick={() => setOpenModal(false)}>
-          Decline
+          Close
         </Button>
       </Modal.Footer>
     </Modal>

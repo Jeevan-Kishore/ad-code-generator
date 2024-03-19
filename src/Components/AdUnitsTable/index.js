@@ -1,7 +1,5 @@
 'use client';
 
-import { useState } from 'react';
-
 export function AdUnitsTable({
   index,
   adUnitID,
@@ -10,10 +8,10 @@ export function AdUnitsTable({
   adSizes,
   parentID,
   setOpenModal,
-  changeJSONAttributes,
   setModalBody,
+  targetingID,
+  setTargetingID,
 }) {
-  const [targetingID, setTargetingID] = useState({});
   const onTargetingIDChange = (value) => {
     const targetIdObject = JSON.parse(JSON.stringify(targetingID));
     targetIdObject[adUnitID] = value;
@@ -21,10 +19,17 @@ export function AdUnitsTable({
   };
   const handleModalOpen = () => {
     setModalBody({
-      index, adUnitID, adCode, adName, adSizes, parentID,
+      index,
+      adUnitID,
+      adCode,
+      adName,
+      adSizes,
+      parentID,
+      targetingIDs: targetingID[adUnitID],
     });
     setOpenModal(true);
   };
+
   return (
     <tr key={adUnitID}>
       <td>
@@ -34,7 +39,6 @@ export function AdUnitsTable({
           name={adUnitID}
           value={adUnitID}
           type="text"
-          onChange={(e) => changeJSONAttributes(e, { adUnitID })}
           placeholder="Type AD UNIT ID"
         />
       </td>
@@ -45,7 +49,6 @@ export function AdUnitsTable({
           name={adCode}
           value={adCode}
           type="text"
-          onChange={(e) => changeJSONAttributes(e, adCode)}
           placeholder="Type AD Code"
         />
       </td>
@@ -56,7 +59,6 @@ export function AdUnitsTable({
           name={adName}
           value={adName}
           type="text"
-          onChange={(e) => changeJSONAttributes(e, adName)}
           placeholder="Type Ad Name"
         />
       </td>
@@ -67,7 +69,6 @@ export function AdUnitsTable({
           name={adSizes}
           value={adSizes}
           type="text"
-          onChange={(e) => changeJSONAttributes(e, adSizes)}
           placeholder="Type Ad Sizes, spit by ';'"
         />
       </td>
@@ -78,7 +79,6 @@ export function AdUnitsTable({
           name={parentID}
           value={parentID}
           type="text"
-          onChange={(e) => changeJSONAttributes(e, parentID)}
           placeholder="Type Email"
         />
       </td>
@@ -88,7 +88,7 @@ export function AdUnitsTable({
           name={`targeting id ${index}`}
           type="text"
           onChange={(e) => onTargetingIDChange(e.target.value)}
-          placeholder="Type Email"
+          placeholder="Targeting ID, spit by ';'"
         />
       </td>
       <td>
