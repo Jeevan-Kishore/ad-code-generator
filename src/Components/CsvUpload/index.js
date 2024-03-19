@@ -4,16 +4,24 @@ import Papa from 'papaparse';
 import { useState, useEffect } from 'react';
 import { initFlowbite } from 'flowbite';
 import { CodeModal } from '../CodeModal';
-
-const onChange = () => {};
+import { AdUnitsTable } from '../AdUnitsTable';
 
 export function CsvUpload() {
   const [jsonData, setJsonData] = useState([]);
   const [openModal, setOpenModal] = useState(false);
+  const [modalBody, setModalBody] = useState({});
 
   useEffect(() => {
     initFlowbite();
   }, []);
+
+  const changeJSONAttributes = ({ key, value, index }) => {
+    const deepCloneJSON = JSON.parse(JSON.stringify(jsonData));
+    const jsonAtIndex = deepCloneJSON[index];
+    const mutatedData = { ...jsonAtIndex, ...{ [key]: value } };
+    deepCloneJSON[index] = mutatedData;
+    setJsonData(deepCloneJSON);
+  };
 
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
@@ -42,7 +50,11 @@ export function CsvUpload() {
 
   return (
     <>
-      <CodeModal openModal={openModal} setOpenModal={setOpenModal} />
+      <CodeModal
+        modalBody={modalBody}
+        openModal={openModal}
+        setOpenModal={setOpenModal}
+      />
       <div className="mt-4 flex flex-col text-sm leading-6 text-gray-600">
         <label
           htmlFor="file-upload"
@@ -79,80 +91,37 @@ export function CsvUpload() {
                 Parent ID
               </th>
               <th scope="col" className="px-6 py-3">
+                Targeting ID
+              </th>
+              <th scope="col" className="px-6 py-3">
                 Action
               </th>
             </tr>
           </thead>
           <tbody>
             {jsonData.map(
-              ({
-                '#Id': adUnitID,
-                Code: adCode,
-                Name: adName,
-                Sizes: adSizes,
-                'Parent Id': parentID,
-              }) => (
-                <tr key={adUnitID}>
-                  <td>
-                    <input
-                      label={adUnitID}
-                      name={adUnitID}
-                      value={adUnitID}
-                      type="text"
-                      onChange={(e) => onChange(e, adUnitID)}
-                      placeholder="Type AD UNIT ID"
-                    />
-                  </td>
-                  <td>
-                    <input
-                      label={adCode}
-                      name={adCode}
-                      value={adCode}
-                      type="text"
-                      onChange={(e) => onChange(e, adCode)}
-                      placeholder="Type AD Code"
-                    />
-                  </td>
-                  <td>
-                    <input
-                      label={adName}
-                      name={adName}
-                      value={adName}
-                      type="text"
-                      onChange={(e) => onChange(e, adName)}
-                      placeholder="Type Ad Name"
-                    />
-                  </td>
-                  <td>
-                    <input
-                      label={adSizes}
-                      name={adSizes}
-                      value={adSizes}
-                      type="text"
-                      onChange={(e) => onChange(e, adSizes)}
-                      placeholder="Type Ad Sizes, spit by ';'"
-                    />
-                  </td>
-                  <td>
-                    <input
-                      label={parentID}
-                      name={parentID}
-                      value={parentID}
-                      type="text"
-                      onChange={(e) => onChange(e, parentID)}
-                      placeholder="Type Email"
-                    />
-                  </td>
-                  <td>
-                    <button
-                      type="button"
-                      className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-                      onClick={() => setOpenModal(true)}
-                    >
-                      Generate
-                    </button>
-                  </td>
-                </tr>
+              (
+                {
+                  '#Id': adUnitID,
+                  Code: adCode,
+                  Name: adName,
+                  Sizes: adSizes,
+                  'Parent Id': parentID,
+                },
+                index,
+              ) => (
+                <AdUnitsTable
+                  key={adUnitID}
+                  setOpenModal={setOpenModal}
+                  index={index}
+                  adCode={adCode}
+                  adName={adName}
+                  adSizes={adSizes}
+                  adUnitID={adUnitID}
+                  parentID={parentID}
+                  changeJSONAttributes={changeJSONAttributes}
+                  setModalBody={setModalBody}
+                />
               ),
             )}
           </tbody>

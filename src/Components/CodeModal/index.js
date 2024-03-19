@@ -1,27 +1,32 @@
-import { Button, Modal } from 'flowbite-react';
+'use client';
 
-export function CodeModal({ openModal, setOpenModal }) {
+import { Button, Modal } from 'flowbite-react';
+import { ModalContent } from '../ModalContent';
+import { getWidgetCode } from '../../utils/generate-widget';
+
+export function CodeModal({ openModal, setOpenModal, modalBody }) {
+  const copyContent = async () => {
+    try {
+      const template = getWidgetCode(modalBody);
+      await navigator.clipboard.writeText(template);
+      setOpenModal(false);
+      console.log('Content copied to clipboard');
+      /* Resolved - text copied to clipboard successfully */
+    } catch (err) {
+      console.error('Failed to copy: ', err);
+      setOpenModal(false);
+      /* Rejected - text failed to copy to the clipboard */
+    }
+  };
+
   return (
     <Modal dismissible show={openModal} onClose={() => setOpenModal(false)}>
-      <Modal.Header>Terms of Service</Modal.Header>
+      <Modal.Header>Widget code for ADs</Modal.Header>
       <Modal.Body>
-        <div className="space-y-6">
-          <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-            With less than a month to go before the European Union enacts new
-            consumer privacy laws for its citizens, companies around the world
-            are updating their terms of service agreements to comply.
-          </p>
-          <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-            The European Union’s General Data Protection Regulation (G.D.P.R.)
-            goes into effect on May 25 and is meant to ensure a common set of
-            data rights in the European Union. It requires organizations to
-            notify users as soon as possible of high-risk data breaches that
-            could personally affect them.
-          </p>
-        </div>
+        <ModalContent modalBody={modalBody} />
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={() => setOpenModal(false)}>I accept</Button>
+        <Button onClick={copyContent}>I accept</Button>
         <Button color="gray" onClick={() => setOpenModal(false)}>
           Decline
         </Button>

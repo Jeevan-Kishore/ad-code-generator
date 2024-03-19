@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import url("highlight.js/styles/dark.min.css");
 
 :root {
   --foreground-rgb: 0, 0, 0;
@@ -24,4 +25,9 @@ body {
   .text-balance {
     text-wrap: balance;
   }
+}
+
+code {
+  font-family: MyFancyCustomFont, monospace;
+  font-size: inherit;
 }

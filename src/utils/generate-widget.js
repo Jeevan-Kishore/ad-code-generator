@@ -1,29 +1,43 @@
-import { minify } from 'html-minifier-terser';
+'use client';
+
 import { v4 as uuidv4 } from 'uuid';
 
-export const generateWidgetUtil = async ({
-  adCode,
-  // adSizes,
-  parentId,
-}) => {
-  if (!parentId) {
-    return null;
-  }
+const getSizes = (adSizeString) => {
+  if (!adSizeString) return [];
+  const adSizes = adSizeString.split(';');
+  return adSizes.reduce((acc, ce) => {
+    acc.push(
+      ce
+        .trim()
+        .split('x')
+        .map((x) => parseInt(x, 10)),
+    );
+    return acc;
+  }, []);
+};
+
+export const getWidgetCode = (modalBody = {}) => {
+  const {
+    adCode,
+    // adName,
+    adSizes,
+    // adUnitID,
+    // index,
+    parentID,
+    // inLineStyles
+  } = modalBody;
   const placementID = uuidv4();
-  const slotId = `/${parentId}/${adCode}`;
-  const template = `<div class="sticky-ad right">
-  <div id='${placementID}' style='min-width: 160px; min-height: 600px;'>
+  const slotId = `/${parentID}/${adCode}`;
+  const sizeArray = getSizes(adSizes);
+
+  return `<div className="sticky-ad right">
+  <div id={placementID} style={inLineStyleObject}>
     <script type="text/javascript">
-      googletag.cmd.push(function() {
+      {googletag.cmd.push(function() {
         const mappings = googletag.sizeMapping()
-        .addSize([1000, 0], [
-          [728, 90],
-          [970, 90],
-          [970, 250]
-        ])
+        .addSize([1000, 0], ${sizeArray})
         .addSize([0, 0], [
-          [320, 50],
-          [300, 250]
+          ${sizeArray}
         ])
         .build();
         googletag.defineSlot('${slotId}', [
@@ -35,9 +49,8 @@ export const generateWidgetUtil = async ({
         ], '${placementID}').defineSizeMapping(mappings).addService(googletag.pubads());
         googletag.enableServices();
         googletag.display('${placementID}');
-      });
+      });}
     </script>
   </div>
 </div>`;
-  return minify(template);
 };
