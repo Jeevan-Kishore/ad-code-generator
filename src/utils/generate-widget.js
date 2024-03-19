@@ -45,11 +45,10 @@ export const getWidgetCode = (modalBody = {}) => {
   <div id={placementID} style={inLineStyleObject}>
     <script type="text/javascript">
       googletag.cmd.push(function() {
-        const mappings = googletag.sizeMapping()
+        const mappings = googletag
+        .sizeMapping()
         .addSize([1000, 0], ${sizeArray})
-        .addSize([0, 0], [
-          ${sizeArray}
-        ])
+        .addSize([0, 0], ${sizeArray})
         .build();
         
         googletag.defineSlot('${slotId}', [
@@ -60,7 +59,8 @@ export const getWidgetCode = (modalBody = {}) => {
           [728, 90]
         ], '${placementID}')
         .setTargeting('adTargetingId', ${getTargetingIds(targetingIDs)})
-        .defineSizeMapping(mappings).addService(googletag.pubads());
+        .defineSizeMapping(mappings)
+        .addService(googletag.pubads());
         
         googletag.enableServices();
         googletag.display('${placementID}');

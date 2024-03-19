@@ -33,54 +33,19 @@ export function AdUnitsTable({
   return (
     <tr key={adUnitID}>
       <td>
-        <input
-          disabled
-          label={adUnitID}
-          name={adUnitID}
-          value={adUnitID}
-          type="text"
-          placeholder="Type AD UNIT ID"
-        />
+        <span>{adUnitID}</span>
       </td>
       <td>
-        <input
-          disabled
-          label={adCode}
-          name={adCode}
-          value={adCode}
-          type="text"
-          placeholder="Type AD Code"
-        />
+        <span>{adCode}</span>
       </td>
       <td>
-        <input
-          disabled
-          label={adName}
-          name={adName}
-          value={adName}
-          type="text"
-          placeholder="Type Ad Name"
-        />
+        <span>{adName}</span>
       </td>
       <td>
-        <input
-          disabled
-          label={adSizes}
-          name={adSizes}
-          value={adSizes}
-          type="text"
-          placeholder="Type Ad Sizes, spit by ';'"
-        />
+        <span>{adSizes}</span>
       </td>
       <td>
-        <input
-          disabled
-          label={parentID}
-          name={parentID}
-          value={parentID}
-          type="text"
-          placeholder="Type Email"
-        />
+        <span>{parentID}</span>
       </td>
       <td>
         <input

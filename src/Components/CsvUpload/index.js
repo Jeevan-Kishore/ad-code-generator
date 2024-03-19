@@ -101,21 +101,24 @@ export function CsvUpload() {
                   'Parent Id': parentID,
                 },
                 index,
-              ) => (
-                <AdUnitsTable
-                  key={adUnitID}
-                  setOpenModal={setOpenModal}
-                  index={index}
-                  adCode={adCode}
-                  adName={adName}
-                  adSizes={adSizes}
-                  adUnitID={adUnitID}
-                  parentID={parentID}
-                  setModalBody={setModalBody}
-                  targetingID={targetingID}
-                  setTargetingID={setTargetingID}
-                />
-              ),
+              ) => {
+                if (!adUnitID) return null;
+                return (
+                  <AdUnitsTable
+                    key={adUnitID}
+                    setOpenModal={setOpenModal}
+                    index={index}
+                    adCode={adCode}
+                    adName={adName}
+                    adSizes={adSizes}
+                    adUnitID={adUnitID}
+                    parentID={parentID}
+                    setModalBody={setModalBody}
+                    targetingID={targetingID}
+                    setTargetingID={setTargetingID}
+                  />
+                );
+              },
             )}
           </tbody>
         </table>

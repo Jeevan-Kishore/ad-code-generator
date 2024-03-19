@@ -10,6 +10,7 @@
     "prepare": "husky install"
   },
   "dependencies": {
+    "@vercel/speed-insights": "^1.0.10",
     "flowbite": "^2.3.0",
     "flowbite-react": "^0.7.3",
     "highlight.js": "^11.9.0",
