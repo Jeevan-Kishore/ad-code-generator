@@ -5,6 +5,7 @@ import { ModalContent } from '../ModalContent';
 import { getWidgetCode } from '../../utils/generate-widget';
 
 export function CodeModal({ openModal, setOpenModal, modalBody }) {
+  const { adName } = modalBody;
   const copyContent = async () => {
     try {
       const template = getWidgetCode(modalBody);
@@ -20,8 +21,16 @@ export function CodeModal({ openModal, setOpenModal, modalBody }) {
   };
 
   return (
-    <Modal dismissible show={openModal} onClose={() => setOpenModal(false)}>
-      <Modal.Header>Widget code for ADs</Modal.Header>
+    <Modal
+      dismissible
+      size="7xl"
+      show={openModal}
+      onClose={() => setOpenModal(false)}
+    >
+      <Modal.Header>
+        Widget code - AD unit -
+        {adName}
+      </Modal.Header>
       <Modal.Body>
         <ModalContent modalBody={modalBody} />
       </Modal.Body>

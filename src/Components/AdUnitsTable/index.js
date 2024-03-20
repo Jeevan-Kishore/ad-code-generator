@@ -32,7 +32,10 @@ export function AdUnitsTable({
   };
 
   return (
-    <tr key={adUnitID}>
+    <tr
+      className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
+      key={adUnitID}
+    >
       <td>
         <span>{adUnitID}</span>
       </td>

@@ -49,7 +49,10 @@ export function CsvUpload() {
         openModal={openModal}
         setOpenModal={setOpenModal}
       />
-      <div className="mt-4 flex flex-col text-sm leading-6 text-gray-600">
+      <div
+        data-tooltip-target="tooltip-default"
+        className="mt-4 flex flex-col text-sm leading-6 text-gray-600"
+      >
         <label
           htmlFor="file-upload"
           className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
@@ -64,6 +67,15 @@ export function CsvUpload() {
             onChange={handleFileUpload}
           />
         </label>
+      </div>
+
+      <div
+        id="tooltip-default"
+        role="tooltip"
+        class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700"
+      >
+        Upload Csv file from AdManager
+        <div class="tooltip-arrow" data-popper-arrow />
       </div>
       <div className="shadow-md sm:rounded-lg overflow-x-auto">
         <table

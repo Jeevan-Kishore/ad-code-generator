@@ -1,7 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import url("highlight.js/styles/dark.min.css");
+@import url("highlight.js/styles/codepen-embed.min.css");
 
 :root {
   --foreground-rgb: 0, 0, 0;

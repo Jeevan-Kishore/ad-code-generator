@@ -3,40 +3,38 @@
 import { v4 as uuidv4 } from 'uuid';
 
 const getSizes = (adSizeString) => {
-  if (!adSizeString) return [];
-  const adSizes = adSizeString.split(';').reduce(
-    (acc, ce) => {
-      const [x, y] = ce
-        .trim()
-        .split('x')
-        .map((a) => parseInt(a, 10));
+  const returnDefault = { mobile: [], web: [], allSizes: [] };
+  if (!adSizeString) return returnDefault;
+  const adSizes = adSizeString.split(';').reduce((acc, ce) => {
+    const [x, y] = ce
+      .trim()
+      .split('x')
+      .map((a) => parseInt(a, 10));
 
-      acc.allSizes.push([x, y]);
+    acc.allSizes.push([x, y]);
 
-      /*
+    /*
           Special case for ad size 300x250
         */
-      if (x === 300 && y === 250) {
-        acc.web.push([x, y]);
-        acc.mobile.push([x, y]);
-        return acc;
-      }
-
-      if (x > 320) {
-        acc.web.push([x, y]);
-        return acc;
-      }
+    if (x === 300 && y === 250) {
+      acc.web.push([x, y]);
       acc.mobile.push([x, y]);
       return acc;
-    },
-    { mobile: [], web: [], allSizes: [] },
-  );
+    }
+
+    if (x > 320) {
+      acc.web.push([x, y]);
+      return acc;
+    }
+    acc.mobile.push([x, y]);
+    return acc;
+  }, returnDefault);
   return adSizes;
 };
 
 const getTargetingIds = (customAttribute, adUnitID) => {
   const { targetingId } = customAttribute[adUnitID] || {};
-  if (!targetingId) return [];
+  if (!targetingId) return '';
   const targetingIDArray = targetingId.split(';').reduce((acc, id) => {
     const x = id.trim();
     if (x) acc.push(x);
@@ -64,18 +62,19 @@ export const getWidgetCode = (modalBody = {}) => {
   const placementID = uuidv4();
   const slotId = `/${parentID}/${adCode}`;
   const { allSizes } = getSizes(adSizes);
+  const targetingIDString = getTargetingIds(customAttribute, adUnitID);
 
-  return `<div'${parentContainerStyles && ` style="${parentContainerStyles}"`}>
+  return `<div${parentContainerStyles && ` style="${parentContainerStyles}"`}>
   <div id='${placementID}'${childContainerStyles && ` style="${childContainerStyles}"`}>
     <script type="text/javascript">
       googletag.cmd.push(function() {
-        const mappings = googletag
+        var mappings = googletag
         .sizeMapping()
         ${getSizesTemplate(adSizes)}
         .build();
         
         googletag.defineSlot('${slotId}', ${JSON.stringify(allSizes)})}, '${placementID}')
-        .setTargeting('adTargetingId', ${getTargetingIds(customAttribute, adUnitID)})
+        ${targetingIDString && `.setTargeting('adTargetingId', ${targetingIDString})`}
         .defineSizeMapping(mappings)
         .addService(googletag.pubads());
         
