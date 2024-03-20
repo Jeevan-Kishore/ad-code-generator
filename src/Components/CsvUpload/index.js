@@ -6,11 +6,14 @@ import { initFlowbite } from 'flowbite';
 import { CodeModal } from '../CodeModal';
 import { AdUnitsTable } from '../AdUnitsTable';
 
+import styles from './styles.module.css';
+
 export function CsvUpload() {
   const [jsonData, setJsonData] = useState([]);
   const [openModal, setOpenModal] = useState(false);
   const [modalBody, setModalBody] = useState({});
-  const [targetingID, setTargetingID] = useState({});
+  const [customAttribute, setCustomAttribute] = useState({});
+  console.log(customAttribute);
 
   useEffect(() => {
     initFlowbite();
@@ -64,26 +67,31 @@ export function CsvUpload() {
         </label>
       </div>
       <div className="shadow-md sm:rounded-lg overflow-x-auto">
-        <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+        <table
+          className={`${styles.tableWidth} text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400`}
+        >
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="px-6 py-3 w-1/12">
                 Ad unit ID
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="px-6 py-3 w-1/12">
                 Ad Code
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="px-6 py-3 w-1/12">
                 Ad Name
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="px-6 py-3 w-1/12">
                 Ad Sizes
               </th>
               <th scope="col" className="px-6 py-3">
-                Parent ID
+                Targeting ID
               </th>
               <th scope="col" className="px-6 py-3">
-                Targeting ID
+                Parent styles
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Child styles
               </th>
               <th scope="col" className="px-6 py-3">
                 Action
@@ -114,8 +122,8 @@ export function CsvUpload() {
                     adUnitID={adUnitID}
                     parentID={parentID}
                     setModalBody={setModalBody}
-                    targetingID={targetingID}
-                    setTargetingID={setTargetingID}
+                    customAttribute={customAttribute}
+                    setCustomAttribute={setCustomAttribute}
                   />
                 );
               },

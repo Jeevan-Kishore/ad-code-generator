@@ -30,3 +30,7 @@ body {
 [type="text"] {
   border-radius: 5px;
 }
+
+td {
+  word-break: break-word;
+}

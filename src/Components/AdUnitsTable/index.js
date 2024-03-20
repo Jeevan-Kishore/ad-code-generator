@@ -9,13 +9,14 @@ export function AdUnitsTable({
   parentID,
   setOpenModal,
   setModalBody,
-  targetingID,
-  setTargetingID,
+  customAttribute,
+  setCustomAttribute,
 }) {
-  const onTargetingIDChange = (value) => {
-    const targetIdObject = JSON.parse(JSON.stringify(targetingID));
-    targetIdObject[adUnitID] = value;
-    setTargetingID(targetIdObject);
+  const onCustomAttrChange = (key, value) => {
+    const customAttrObject = JSON.parse(JSON.stringify(customAttribute));
+    const existingValues = customAttrObject[adUnitID];
+    customAttrObject[adUnitID] = { ...existingValues, ...{ [key]: value } };
+    setCustomAttribute(customAttrObject);
   };
   const handleModalOpen = () => {
     setModalBody({
@@ -25,7 +26,7 @@ export function AdUnitsTable({
       adName,
       adSizes,
       parentID,
-      targetingIDs: targetingID[adUnitID],
+      customAttribute,
     });
     setOpenModal(true);
   };
@@ -45,15 +46,30 @@ export function AdUnitsTable({
         <span>{adSizes}</span>
       </td>
       <td>
-        <span>{parentID}</span>
-      </td>
-      <td>
         <input
           label={`targeting id ${index}`}
           name={`targeting id ${index}`}
           type="text"
-          onChange={(e) => onTargetingIDChange(e.target.value)}
+          onChange={(e) => onCustomAttrChange('targetingId', e.target.value)}
           placeholder="Targeting ID, spit by ';'"
+        />
+      </td>
+      <td>
+        <input
+          label={`parent container styles ${index}`}
+          name={`parent container styles ${index}`}
+          type="text"
+          onChange={(e) => onCustomAttrChange('parentContainerStyles', e.target.value)}
+          placeholder="Parent container styles"
+        />
+      </td>
+      <td>
+        <input
+          label={`child container styles ${index}`}
+          name={`child container styles ${index}`}
+          type="text"
+          onChange={(e) => onCustomAttrChange('childContainerStyles', e.target.value)}
+          placeholder="Child container styles"
         />
       </td>
       <td>
