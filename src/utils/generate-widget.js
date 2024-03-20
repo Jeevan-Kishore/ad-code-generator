@@ -17,7 +17,7 @@ const getSizes = (adSizeString) => {
 };
 
 const getTargetingIds = (customAttribute, adUnitID) => {
-  const { targetingId } = customAttribute[adUnitID];
+  const { targetingId } = customAttribute[adUnitID] || {};
   if (!targetingId) return [];
   const targetingIDArray = targetingId.split(';').reduce((acc, id) => {
     const x = id.trim();
@@ -37,13 +37,13 @@ export const getWidgetCode = (modalBody = {}) => {
     parentID,
     customAttribute,
   } = modalBody;
-  const { parentContainerStyles, childContainerStyles } = customAttribute[adUnitID];
+  const { parentContainerStyles = '', childContainerStyles = '' } = customAttribute[adUnitID] || {};
   const placementID = uuidv4();
   const slotId = `/${parentID}/${adCode}`;
   const sizeArray = getSizes(adSizes);
 
-  return `<div style="${parentContainerStyles}">
-  <div id={placementID} style="${childContainerStyles}">
+  return `<div'${parentContainerStyles && ` style="${parentContainerStyles}"`}>
+  <div id='${placementID}'${childContainerStyles && ` style="${childContainerStyles}"`}>
     <script type="text/javascript">
       googletag.cmd.push(function() {
         const mappings = googletag
