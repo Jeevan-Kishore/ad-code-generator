@@ -13,7 +13,6 @@ export function CsvUpload() {
   const [openModal, setOpenModal] = useState(false);
   const [modalBody, setModalBody] = useState({});
   const [customAttribute, setCustomAttribute] = useState({});
-  console.log(customAttribute);
 
   useEffect(() => {
     initFlowbite();

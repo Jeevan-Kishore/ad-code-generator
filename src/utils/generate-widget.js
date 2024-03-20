@@ -4,16 +4,32 @@ import { v4 as uuidv4 } from 'uuid';
 
 const getSizes = (adSizeString) => {
   if (!adSizeString) return [];
-  const adSizes = adSizeString.split(';').reduce((acc, ce) => {
-    acc.push(
-      ce
+  const adSizes = adSizeString.split(';').reduce(
+    (acc, ce) => {
+      const [x, y] = ce
         .trim()
         .split('x')
-        .map((x) => parseInt(x, 10)),
-    );
-    return acc;
-  }, []);
-  return JSON.stringify(adSizes);
+        .map((a) => parseInt(a, 10));
+
+      /*
+          Special case for ad size 300x250
+        */
+      if (x === 300 && y === 250) {
+        acc.web.push([x, y]);
+        acc.mobile.push([x, y]);
+        return acc;
+      }
+
+      if (x > 320) {
+        acc.web.push([x, y]);
+        return acc;
+      }
+      acc.mobile.push([x, y]);
+      return acc;
+    },
+    { mobile: [], web: [] },
+  );
+  return adSizes;
 };
 
 const getTargetingIds = (customAttribute, adUnitID) => {
@@ -25,6 +41,17 @@ const getTargetingIds = (customAttribute, adUnitID) => {
     return acc;
   }, []);
   return JSON.stringify(targetingIDArray);
+};
+
+const getSizesTemplate = (adSizes) => {
+  const { mobile = [], web = [] } = getSizes(adSizes);
+  const desktopTemplate = web.length
+    ? `.addSize([1000, 0], ${JSON.stringify(web)})`
+    : '';
+  const mobileTemplate = mobile.length
+    ? `.addSize([0, 0], ${JSON.stringify(mobile)})`
+    : '';
+  return `${desktopTemplate}${mobileTemplate}`;
 };
 
 export const getWidgetCode = (modalBody = {}) => {
@@ -40,7 +67,6 @@ export const getWidgetCode = (modalBody = {}) => {
   const { parentContainerStyles = '', childContainerStyles = '' } = customAttribute[adUnitID] || {};
   const placementID = uuidv4();
   const slotId = `/${parentID}/${adCode}`;
-  const sizeArray = getSizes(adSizes);
 
   return `<div'${parentContainerStyles && ` style="${parentContainerStyles}"`}>
   <div id='${placementID}'${childContainerStyles && ` style="${childContainerStyles}"`}>
@@ -48,8 +74,7 @@ export const getWidgetCode = (modalBody = {}) => {
       googletag.cmd.push(function() {
         const mappings = googletag
         .sizeMapping()
-        .addSize([1000, 0], ${sizeArray})
-        .addSize([0, 0], ${sizeArray})
+        ${getSizesTemplate(adSizes)}
         .build();
         
         googletag.defineSlot('${slotId}', [
