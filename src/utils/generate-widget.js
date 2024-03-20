@@ -11,6 +11,8 @@ const getSizes = (adSizeString) => {
         .split('x')
         .map((a) => parseInt(a, 10));
 
+      acc.allSizes.push([x, y]);
+
       /*
           Special case for ad size 300x250
         */
@@ -27,7 +29,7 @@ const getSizes = (adSizeString) => {
       acc.mobile.push([x, y]);
       return acc;
     },
-    { mobile: [], web: [] },
+    { mobile: [], web: [], allSizes: [] },
   );
   return adSizes;
 };
@@ -56,17 +58,12 @@ const getSizesTemplate = (adSizes) => {
 
 export const getWidgetCode = (modalBody = {}) => {
   const {
-    adCode,
-    // adName,
-    adSizes,
-    adUnitID,
-    // index,
-    parentID,
-    customAttribute,
+    adCode, adSizes, adUnitID, parentID, customAttribute,
   } = modalBody;
   const { parentContainerStyles = '', childContainerStyles = '' } = customAttribute[adUnitID] || {};
   const placementID = uuidv4();
   const slotId = `/${parentID}/${adCode}`;
+  const { allSizes } = getSizes(adSizes);
 
   return `<div'${parentContainerStyles && ` style="${parentContainerStyles}"`}>
   <div id='${placementID}'${childContainerStyles && ` style="${childContainerStyles}"`}>
@@ -77,13 +74,7 @@ export const getWidgetCode = (modalBody = {}) => {
         ${getSizesTemplate(adSizes)}
         .build();
         
-        googletag.defineSlot('${slotId}', [
-          [970, 250],
-          [320, 50],
-          [970, 90],
-          [300, 250],
-          [728, 90]
-        ], '${placementID}')
+        googletag.defineSlot('${slotId}', ${JSON.stringify(allSizes)})}, '${placementID}')
         .setTargeting('adTargetingId', ${getTargetingIds(customAttribute, adUnitID)})
         .defineSizeMapping(mappings)
         .addService(googletag.pubads());
