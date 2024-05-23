@@ -73,7 +73,7 @@ export const getWidgetCode = (modalBody = {}) => {
         ${getSizesTemplate(adSizes)}
         .build();
         
-        googletag.defineSlot('${slotId}', ${JSON.stringify(allSizes)})}, '${placementID}')
+        googletag.defineSlot('${slotId}', ${JSON.stringify(allSizes)}, '${placementID}')
         ${targetingIDString && `.setTargeting('adTargetingId', ${targetingIDString})`}
         .defineSizeMapping(mappings)
         .addService(googletag.pubads());
